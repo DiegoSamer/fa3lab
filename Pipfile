@@ -7,6 +7,9 @@ name = "pypi"
 fastapi = "*"
 matplotlib = "*"
 uvicorn = "*"
+Pillow = "*"
+numpy = "*"
+requests = "*"
 
 [dev-packages]
 
