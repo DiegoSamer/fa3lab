@@ -10,6 +10,7 @@ uvicorn = "*"
 Pillow = "*"
 numpy = "*"
 requests = "*"
+typing-extensions = "*"
 
 [dev-packages]
 
