@@ -27,7 +27,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
-@app.post("/image_form", response_class=HTMLResponse)
+@app.post("/rotated_image", response_class=HTMLResponse)
 async def make_image(request: Request,
                      angle: int = Form(),
                      files: List[UploadFile] = File(description="Multiple files as UploadFile"),
