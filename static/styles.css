@@ -1,8 +1,8 @@
 h2 {
-    color: GreenYellow; /* Цвет текста (красный) */
-    font-family: Arial, sans-serif; /* Шрифт */
-    font-size: 28px; /* Размер шрифта */
-    font-weight: bold; /* Жирный шрифт */
+    color: GreenYellow;
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 h3 {

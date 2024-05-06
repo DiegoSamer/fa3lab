@@ -62,7 +62,6 @@ async def make_image(request: Request,
     rotated_histogram_images = []
     if ready:
         print([file.filename.encode('utf-8') for file in files])
-        # преобразуем имена файлов в хеш-строку
         images = ["static/" + hashlib.sha256(file.filename.encode('utf-8')).hexdigest() for file in files]
         # берем содержимое файлов
         content = [await file.read() for file in files]
