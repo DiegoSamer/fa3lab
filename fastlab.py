@@ -1,24 +1,19 @@
 from fastapi import FastAPI, Request, Form, HTTPException, File, UploadFile
 from typing import List
 import hashlib
-from PIL import ImageDraw
-import fastapi.responses
 import numpy
 import io
 import requests
 from PIL import Image
-from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import matplotlib.pyplot as plt
-from fastapi.responses import RedirectResponse
 import os
 from pathlib import Path
 
 app = FastAPI()
 
-# Hello World route
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
@@ -32,7 +27,6 @@ async def make_image(request: Request,
                      angle: int = Form(),
                      files: List[UploadFile] = File(description="Multiple files as UploadFile"),
                      resp: str = Form()):
-    # Проверка reCAPTCHA
     recaptcha_secret = "6LdDV80pAAAAAJ7kIaFSs4mMADU3qSxAYUr92n0_"  # Замените на ваш секретный ключ reCAPTCHA
     recaptcha_data = {
         'secret': recaptcha_secret,
@@ -43,7 +37,6 @@ async def make_image(request: Request,
     recaptcha_result = recaptcha_verification.json()
 
     if not recaptcha_result['success']:
-        # Обработка неудачной проверки reCAPTCHA
         raise HTTPException(status_code=400, detail="Ошибка проверки капчи")
 
     static_dir = Path("static")
@@ -51,7 +44,6 @@ async def make_image(request: Request,
         if file.suffix != ".css":
             os.remove(file)
 
-    # Продолжаем обработку только после успешной проверки reCAPTCHA
     ready = False
     print(len(files))
     if len(files) > 0:
@@ -63,27 +55,22 @@ async def make_image(request: Request,
     if ready:
         print([file.filename.encode('utf-8') for file in files])
         images = ["static/" + hashlib.sha256(file.filename.encode('utf-8')).hexdigest() for file in files]
-        # берем содержимое файлов
+
         content = [await file.read() for file in files]
-        # создаем объекты Image типа RGB
+
         p_images = [Image.open(io.BytesIO(con)).convert("RGB") for con in content]
 
         for i in range(len(p_images)):
-            # Поворот изображения
             rotated_image = p_images[i].rotate(angle, expand=True)
 
-            # Получение гистограмм исходного и повернутого изображений
             original_histogram = get_histogram(p_images[i])
             rotated_histogram = get_histogram(rotated_image)
 
-            # Сохранение повернутого изображения
             rotated_image.save("./" + images[i], 'JPEG')
 
-            # Создание изображения гистограммы
             original_histogram_image = create_histogram_image(original_histogram)
             rotated_histogram_image = create_histogram_image(rotated_histogram)
 
-            # Сохранение изображения гистограммы
             original_histogram_image_path = f"static/original_histogram_{i}.png"
             rotated_histogram_image_path = f"static/rotated_histogram_{i}.png"
             original_histogram_image.save(original_histogram_image_path)
@@ -92,7 +79,6 @@ async def make_image(request: Request,
             original_histogram_images.append(original_histogram_image_path)
             rotated_histogram_images.append(rotated_histogram_image_path)
 
-        # возвращаем html с параметрами-ссылками на изображения и графики распределения цветов
         return templates.TemplateResponse("forms.html", {"request": request, "ready": ready, "images": images,
                                                          "original_histogram_images": original_histogram_images,
                                                          "rotated_histogram_images": rotated_histogram_images})
