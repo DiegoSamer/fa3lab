@@ -133,6 +133,6 @@ def create_histogram_image(histograms):
     return Image.open(buf)
 
 
-@app.get("/image_form", response_class=HTMLResponse)
+@app.get("/rotated_image", response_class=HTMLResponse)
 async def make_image(request: Request):
     return templates.TemplateResponse("forms.html", {"request": request})
