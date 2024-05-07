@@ -27,5 +27,5 @@ jobs:
         if: github.ref == 'refs/heads/master'
         continue-on-error: true
         run: |
-          set -e
-          curl -X GET https://api.render.com/deploy/srv-copo0jv79t8c73827q00?key=9mMcEhLTCes
+          run: |
+          curl -X POST https://api.render.com/deploy/srv-copo0jv79t8c73827q00?key=9mMcEhLTCes
