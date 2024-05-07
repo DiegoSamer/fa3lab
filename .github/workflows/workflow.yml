@@ -24,6 +24,5 @@ jobs:
         run: pipenv run python -m pytest tests.py
 
       - name: Deploy to Render.com
-        if: github.ref == 'refs/heads/main'
         run: |
-            curl -X POST https://api.render.com/deploy/srv-copo0jv79t8c73827q00?key=9mMcEhLTCes
+          curl -X POST https://api.render.com/deploy/srv-copo0jv79t8c73827q00?key=9mMcEhLTCes
