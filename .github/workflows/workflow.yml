@@ -24,5 +24,12 @@ jobs:
         run: pipenv run python -m pytest tests.py
 
       - name: Deploy to Render.com
+        if: github.ref == 'refs/heads/master'
+        continue-on-error: true
         run: |
-          curl -X GET https://api.render.com/deploy/srv-copo0jv79t8c73827q00?key=9mMcEhLTCes
+          set -e
+          curl -X POST https://api.render.com/deploy/srv-copo0jv79t8c73827q00?key=9mMcEhLTCes
+          if [ $? -ne 0 ]; then
+            echo "Деплой на Render.com завершился с ошибкой" >&2
+            exit 1
+          fi
