@@ -24,7 +24,7 @@ def read_root():
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-
+#1
 @app.post("/image_form", response_class=HTMLResponse)
 async def make_image(request: Request,
                      angle: int = Form(),
