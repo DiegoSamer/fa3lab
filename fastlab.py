@@ -42,11 +42,6 @@ async def make_image(request: Request,
     if not recaptcha_result['success']:
         raise HTTPException(status_code=400, detail="Ошибка проверки капчи")
 
-    static_dir = Path("static")
-    for file in static_dir.glob("*"):
-        if file.suffix != ".css":
-            os.remove(file)
-
     ready = False
     print(len(files))
     if len(files) > 0:
